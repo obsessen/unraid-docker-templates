@@ -23,7 +23,7 @@
         --providers.docker.exposedbydefault='false'
         --entryPoints.web.address=':80'
         --entryPoints.websecure.address=':443'
-        --certificatesresolvers.stopinja.acme.tlschallenge='true'
+        --certificatesResolvers.stopinja.acme.tlschallenge='true'
         --certificatesResolvers.stopinja.acme.email='rok.vetrsek@gmail.com'
         --certificatesResolvers.stopinja.acme.storage='/etc/traefik/acme.json'
     </PostArgs>
