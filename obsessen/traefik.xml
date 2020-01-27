@@ -10,21 +10,28 @@
     <Repository>traefik:v2.0</Repository>
     <Privileged>true</Privileged>
     <BindTime>true</BindTime>
-    <WebUI>http://[IP]:[PORT:6888]/</WebUI>
+    <WebUI>http://[IP]:[PORT:8080]/</WebUI>
     <Network Default="bridge">bridge</Network>
     <Config Required="true" Type="Port" Name="HTTP Port" Target="80" Default="88" Mode="tcp" Display="always-hide" Description="Traefik's http port"/>
     <Config Required="true" Type="Port" Name="HTTPS Port" Target="443" Default="444" Mode="tcp" Display="always-hide" Description="Traefik's https port"/>
     <Config Required="true" Type="Port" Name="Frontend Port" Target="8080" Default="8080" Mode="tcp" Display="always-hide" Description="Traefik's frontend port"/>
     <Config Required="true" Type="Path" Name="Config Storage Path" Target="/etc/traefik/" Default="/mnt/user/appdata/traefik" Mode="rw" Display="always-hide" Description="Path for configuration files"/>
-    <PostArgs> --log.level='DEBUG' --api.insecure='true' --providers.docker='true' --providers.docker.exposedbydefault='false' --entryPoints.web.address=':80' --entryPoints.websecure.address=':443' --certificatesresolvers.le.acme.tlschallenge='true' --certificatesResolvers.le.acme.email='kale.samil@gmail.com' --certificatesResolvers.le.acme.storage='/etc/traefik/acme.json'
+    <PostArgs>
+        --log.level='DEBUG'
+        --api.insecure='true'
+        --providers.docker='true'
+        --providers.docker.exposedbydefault='false'
+        --entryPoints.web.address=':80'
+        --entryPoints.websecure.address=':443'
+        --certificatesresolvers.stopinja.acme.tlschallenge='true'
+        --certificatesResolvers.stopinja.acme.email='rok.vetrsek@gmail.com'
+        --certificatesResolvers.stopinja.acme.storage='/etc/traefik/acme.json'
     </PostArgs>
     <ExtraParams>
 		-v '/var/run/docker.sock':'/var/run/docker.sock':ro
-		-l 'traefik.enable=true'
 		-l 'traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)'
 		-l 'traefik.http.routers.redirs.entrypoints=web'
 		-l 'traefik.http.routers.redirs.middlewares=redirect-to-https'
 		-l 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
     </ExtraParams>
-    <Config Name="Test label" Target="test-label" Default="" Mode="" Description="Test label description" Type="Label" Display="always" Required="false" Mask="false">true</Config>
 </Container>
