@@ -3,7 +3,7 @@
     <Name>Traefik</Name>
     <Category>Cloud:</Category>
     <Project>https://traefik.io</Project>
-    <Icon>https://raw.githubusercontent.com/yaskor/unraid-docker-templates/master/yaskor/icon/traefik.png</Icon>
+    <Icon>https://raw.githubusercontent.com/obsessen/unraid-docker-templates/master/obsessen/icon/traefik.png</Icon>
     <Overview>Træfik is a modern HTTP reverse proxy and load balancer</Overview>
     <Registry>https://hub.docker.com/_/traefik</Registry>
     <GitHub>https://github.com/containous/traefik</GitHub>
@@ -12,35 +12,19 @@
     <BindTime>true</BindTime>
     <WebUI>http://[IP]:[PORT:6888]/</WebUI>
     <Network Default="bridge">bridge</Network>
-    <Config Required="true" Type="Port" Name="HTTP Port"
-            Target="80" Default="6080" Mode="tcp" Display="always-hide"
-            Description="Traefik's http port"/>
-    <Config Required="true" Type="Port" Name="HTTPS Port"
-            Target="443" Default="6443" Mode="tcp" Display="always-hide"
-            Description="Traefik's https port"/>
-    <Config Required="true" Type="Port" Name="Frontend Port"
-            Target="8080" Default="6888" Mode="tcp" Display="always-hide"
-            Description="Traefik's frontend port"/>
-    <Config Required="true" Type="Path" Name="Config Storage Path"
-            Target="/etc/traefik/" Default="/mnt/user/appdata/traefik" Mode="rw" Display="always-hide"
-            Description="Path for configuration files"/>
-	<PostArgs>
-		--log.level='DEBUG'
-        --api.insecure='true'
-		--providers.docker='true'
-		--providers.docker.exposedbydefault='false'
-		--entryPoints.web.address=':80'
-		--entryPoints.websecure.address=':443'
-		--certificatesresolvers.le.acme.tlschallenge='true'
-		--certificatesResolvers.le.acme.email='kale.samil@gmail.com'
-		--certificatesResolvers.le.acme.storage='/etc/traefik/acme.json'
+    <Config Required="true" Type="Port" Name="HTTP Port" Target="80" Default="88" Mode="tcp" Display="always-hide" Description="Traefik's http port"/>
+    <Config Required="true" Type="Port" Name="HTTPS Port" Target="443" Default="444" Mode="tcp" Display="always-hide" Description="Traefik's https port"/>
+    <Config Required="true" Type="Port" Name="Frontend Port" Target="8080" Default="8080" Mode="tcp" Display="always-hide" Description="Traefik's frontend port"/>
+    <Config Required="true" Type="Path" Name="Config Storage Path" Target="/etc/traefik/" Default="/mnt/user/appdata/traefik" Mode="rw" Display="always-hide" Description="Path for configuration files"/>
+    <PostArgs> --log.level='DEBUG' --api.insecure='true' --providers.docker='true' --providers.docker.exposedbydefault='false' --entryPoints.web.address=':80' --entryPoints.websecure.address=':443' --certificatesresolvers.le.acme.tlschallenge='true' --certificatesResolvers.le.acme.email='kale.samil@gmail.com' --certificatesResolvers.le.acme.storage='/etc/traefik/acme.json'
     </PostArgs>
-	<ExtraParams>
+    <ExtraParams>
 		-v '/var/run/docker.sock':'/var/run/docker.sock':ro
-		-l 'traefik.enable=true' 
-		-l 'traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)' 
-		-l 'traefik.http.routers.redirs.entrypoints=web' 
-		-l 'traefik.http.routers.redirs.middlewares=redirect-to-https' 
-		-l 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https' 
+		-l 'traefik.enable=true'
+		-l 'traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)'
+		-l 'traefik.http.routers.redirs.entrypoints=web'
+		-l 'traefik.http.routers.redirs.middlewares=redirect-to-https'
+		-l 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
     </ExtraParams>
+    <Config Name="Test label" Target="test-label" Default="" Mode="" Description="Test label description" Type="Label" Display="always" Required="false" Mask="false">true</Config>
 </Container>
