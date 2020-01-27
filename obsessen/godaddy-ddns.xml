@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+    <Name>Godaddy DDNS</Name>
+    <Category>Cloud:</Category>
+    <Icon>https://raw.githubusercontent.com/yaskor/unraid-docker-templates/master/yaskor/icon/godaddy-ddns.png</Icon>
+    <Overview>
+        Docker image to provide a DDNS service for godaddy domains. Uses the GoDaddy REST API.[br][br]
+        Get a GoDaddy developer key and secret from [a href='https://developer.godaddy.com/keys' target='_blank']https://developer.godaddy.com/keys[/a]
+    </Overview>
+    <Registry>https://hub.docker.com/r/peteward44/godaddy-ddns</Registry>
+    <Repository>peteward44/godaddy-ddns</Repository>
+    <Privileged>false</Privileged>
+    <BindTime>true</BindTime>
+    <Network Default="bridge">bridge</Network>
+    <Config Required="true" Type="Variable" Name="API Key"
+            Target="GODADDY_KEY" Default="" Display="always-hide"
+            Description="Godaddy API Key"/>
+    <Config Required="true" Type="Variable" Name="API Secret" Mask="true"
+            Target="GODADDY_SECRET" Default="" Display="always-hide"
+            Description="Godaddy API Secret"/>	
+    <Config Required="true" Type="Variable" Name="Domain"
+            Target="GODADDY_DOMAIN" Default="" Display="always-hide"
+            Description="Godaddy Domain"/>
+</Container>

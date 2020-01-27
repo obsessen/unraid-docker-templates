@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+    <Name>Drone Server</Name>
+    <Category>Cloud:</Category>
+    <Project>https://drone.io/</Project>
+    <Icon>https://raw.githubusercontent.com/yaskor/unraid-docker-templates/master/yaskor/icon/drone-server.png</Icon>
+    <Overview>Drone is an open source Continuous Delivery platform that automates your testing and release workflows.</Overview>
+    <Registry>https://hub.docker.com/r/drone/drone</Registry>
+    <Repository>drone/drone:1</Repository>
+    <GitHub>https://github.com/drone/drone</GitHub>
+    <Privileged>true</Privileged>
+    <BindTime>true</BindTime>
+    <WebUI>http://[IP]:[PORT:10180]/</WebUI>
+    <Network Default="bridge">bridge</Network>
+    <Config Required="true" Type="Variable" Name="Drone Host"
+            Target="DRONE_SERVER_HOST" Default="drone.yaskor.net" Display="always-hide" 
+            Description="Required string value provides your external hostname or IP address. If using an IP address you may include the port"/>
+    <Config Required="true" Type="Variable" Name="Drone Protocol"
+            Target="DRONE_SERVER_PROTO" Default="https" Display="always-hide" 
+            Description="Required string value provides your external protocol scheme. This value should be set to http or https"/>
+    <Config Required="true" Type="Variable" Name="Gogs URL"
+            Target="DRONE_GOGS_SERVER" Default="" Display="always-hide" 
+            Description="Required string value provides your Gogs server address"/>			
+    <Config Required="true" Type="Variable" Name="Secret"
+            Target="DRONE_RPC_SECRET" Default="" Display="always-hide" 
+            Description="Required string value provides the drone shared secret. This is used to authenticate the rpc connection to the server. The server and agent must be provided the same secret value"/>
+    <Config Required="true" Type="Path" Name="Config Storage Path"
+            Target="/data" Default="/mnt/user/appdata/drone" Mode="rw" Display="always-hide" 
+            Description="Directory which keeps drone's sqlite database"/>	
+    <Config Required="true" Type="Port" Name="Frontend Port"
+            Target="80" Default="10180" Mode="tcp" Display="advanced-hide" 
+            Description="Drone's frontend port"/>
+    <Config Required="true" Type="Port" Name="Server Port"
+            Target="90" Default="10190" Mode="tcp" Display="advanced-hide" 
+            Description="Drone's server port"/>
+    <Config Required="true" Type="Label" Name="Traefik Enable" 
+            Target="traefik.enable" Default="true" Display="advanced-hide"
+            Description="Expose container"/>
+    <ExtraParams>
+        -e 'DRONE_AGENTS_ENABLED'='true'
+        -l 'traefik.http.services.drone.loadbalancer.server.port'='80'
+        -l 'traefik.http.routers.drone_https.entrypoints'='websecure'
+        -l 'traefik.http.routers.drone_https.rule'='Host(`drone.yaskor.net`)'
+        -l 'traefik.http.routers.drone_https.tls.certresolver'='le'
+    </ExtraParams>
+</Container>

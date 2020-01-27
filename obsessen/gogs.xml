@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+    <Name>Gogs</Name>
+    <Category>Cloud:</Category>
+    <Project>https://github.com/gogits/gogs</Project>
+    <Icon>https://raw.githubusercontent.com/yaskor/unraid-docker-templates/master/yaskor/icon/gogs.png</Icon>
+    <Overview>Gogs is a painless self-hosted Git service</Overview>
+    <GitHub>https://github.com/gogits/gogs</GitHub>
+    <Registry>https://hub.docker.com/r/gogs/gogs/</Registry>
+    <Repository>gogs/gogs</Repository>
+    <Privileged>false</Privileged>
+    <BindTime>true</BindTime>
+    <WebUI>http://[IP]:[PORT:10080]/</WebUI>
+    <Network Default="bridge">bridge</Network>
+    <Config Required="true" Type="Path" Name="Config Storage Path"
+            Target="/data" Default="/mnt/user/appdata/gogs" Mode="rw" Display="always-hide"
+            Description="Directory which keeps git repositories and gogs data"/>
+    <Config Required="true" Type="Port" Name="Frontend Port"
+            Target="3000" Default="10080" Mode="tcp" Display="advanced-hide"
+            Description="Gog's frontend port"/>
+    <Config Required="false" Type="Label" Name="Traefik Enable" 
+            Target="traefik.enable" Default="true" Display="advanced-hide"
+            Description="Expose container"/>
+    <ExtraParams>
+        -l 'traefik.http.services.gogs.loadbalancer.server.port'='3000'
+        -l 'traefik.http.routers.gogs_https.entrypoints'='websecure'
+        -l 'traefik.http.routers.gogs_https.rule'='Host(`gogs.yaskor.net`)'
+        -l 'traefik.http.routers.gogs_https.tls.certresolver'='le'
+    </ExtraParams>
+</Container>

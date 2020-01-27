@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+    <Name>Plex</Name>
+    <Category>MediaServer:Video MediaServer:Music MediaServer:Photos</Category>
+    <Project>https://plex.tv/</Project>
+    <Icon>https://raw.githubusercontent.com/yaskor/unraid-docker-templates/master/yaskor/icon/plex.png</Icon>
+    <Overview>
+        [b]Plex Media Server[/b][br][br]
+        Enjoy your media on all your devices.[br]
+        All your movie, TV Show, music, and photo collections at your fingertips, anywhere you go on all the devices you love.[br][br]
+		
+        [a href='https://forums.plex.tv/discussion/62832/plex-media-server#latest' target='_blank']Latest Plex Media Server changes[/a]
+		
+        Get your Token from [a href='https://plex.tv/claim' target='_blank']https://plex.tv/claim[/a]
+    </Overview>
+    <Registry>https://hub.docker.com/r/plexinc/pms-docker</Registry>
+    <GitHub>https://github.com/plexinc/pms-docker</GitHub>
+    <Repository>plexinc/pms-docker</Repository>
+    <Privileged>true</Privileged>
+    <BindTime>true</BindTime>
+    <WebUI>http://[IP]:[PORT:32400]/web</WebUI>
+    <Network Default="host">host</Network>
+    <Config Required="true" Type="Variable" Name="Token"
+            Target="PLEX_CLAIM" Default="" Display="always-hide" 
+            Description="Plex Token"/>
+    <Config Required="true" Type="Path" Name="Config Path"
+            Target="/config" Default="/mnt/user/appdata/plex" Mode="rw" Display="always-hide"
+            Description="Plex config path"/>
+    <Config Required="true" Type="Path" Name="Transcode Path"
+            Target="/transcode" Default="/tmp" Mode="rw" Display="always-hide" 
+            Description="Plex transcode path"/>
+    <Config Required="true" Type="Path" Name="Media Path"
+            Target="/media" Default="/mnt/user" Mode="rw" Display="always-hide" 
+            Description="Path to your media library"/>
+    <ExtraParams>
+        -e 'VERSION'='latest'
+        -e 'PLEX_UID'='99'
+        -e 'PLEX_GID'='100'
+    </ExtraParams>
+</Container>

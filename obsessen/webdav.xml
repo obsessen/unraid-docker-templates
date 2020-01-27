@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+    <Name>WebDAV</Name>
+    <Category>Cloud:</Category>
+    <Icon>https://raw.githubusercontent.com/yaskor/unraid-docker-templates/master/yaskor/icon/webdav.png</Icon>
+    <Overview>A WebDAV docker image.</Overview>
+    <GitHub>https://github.com/sashgorokhov/docker-nginx-webdav</GitHub>
+    <Registry>https://hub.docker.com/r/sashgorokhov/webdav</Registry>
+    <Repository>sashgorokhov/webdav</Repository>
+    <Privileged>false</Privileged>
+    <BindTime>true</BindTime>
+    <WebUI>http://[IP]:[PORT:10380]</WebUI>
+    <Network Default="bridge">bridge</Network>
+    <Config Required="true" Type="Variable" Name="Username"
+            Target="USERNAME" Default="" Display="always-hide"
+            Description="WebDAV username"/>
+    <Config Required="true" Type="Variable" Name="Password" Mask="true"
+            Target="PASSWORD" Default="" Display="always-hide"
+            Description="WebDAV password"/>
+    <Config Required="true" Type="Path" Name="WebDAV Path"
+            Target="/media" Default="/mnt/user" Mode="rw" Display="always-hide"
+            Description="WebDAV root path"/>
+    <Config Required="true" Type="Port" Name="WebDAV port"
+            Target="80" Default="10380" Mode="tcp" Display="advanced-hide"
+            Description="WebDAV port"/>
+    <Config Required="true" Type="Label" Name="Traefik Enable" 
+            Target="traefik.enable" Default="true" Display="advanced-hide"
+            Description="Expose container"/>
+    <ExtraParams>
+        -l 'traefik.http.services.webdav.loadbalancer.server.port'='80'
+        -l 'traefik.http.routers.webdav_https.entrypoints'='websecure'
+        -l 'traefik.http.routers.webdav_https.rule'='Host(`webdav.yaskor.net`)'
+        -l 'traefik.http.routers.webdav_https.tls.certresolver'='le'
+    </ExtraParams>
+</Container>
